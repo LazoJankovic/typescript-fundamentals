@@ -39,9 +39,10 @@ function layoutProducts(products: ProductType[]) {
     return cardHtml;
   });
   let productsHtml = `<ul>${items.join('')}</ul>`;
+  console.log(productsHtml);
   return productsHtml;
 }
-
+                              // returns promise of array that contains ProductType elements
 async function getProducts(): Promise<ProductType[]> {
   const response: Response = await fetch(productsURL);
   const products: ProductType[] = await response.json();
@@ -106,13 +107,16 @@ function runTheLearningSamples() {
     },
     {
       id: 30,
-      name: 'Cheese',
+      name: 'Cheese', //changed this to number and it DOES show errors below when we use sampleProducts e.g. 
+                                              // Type '(string | number)[]' is not assignable to type 'string[]'.
+                                              // Type 'string | number' is not assignable to type 'string'.
+                                              // Type 'number' is not assignable to type 'string'.ts(2322)
       icon: 'fas fa-cheese',
     },
   ];
 
   function getProductNames(): string[] {
-    return sampleProducts.map((p) => p.name);
+    return sampleProducts.map((p) => p.name); // ---^^^ see comment
   }
 
   console.log(`${prefix} return array`);
@@ -121,8 +125,10 @@ function runTheLearningSamples() {
   // Return Types
 
   // CREATE type ProductType
-
-  function getProductById(id: number): ProductType | undefined {
+                                          //without undefined it will point to us that function could return undefined
+  function getProductById(id: number): ProductType | undefined {//Type '{ id: number; name: string; icon: string; } | undefined' is not assignable to 
+                                                                // type 'ProductType'.
+                                                               //  Type 'undefined' is not assignable to type 'ProductType'.ts(2322)
     return sampleProducts.find((p) => (id = p.id));
   }
 
@@ -131,7 +137,7 @@ function runTheLearningSamples() {
 
   // Return void
 
-  function displayProducts(products: ProductType[]): void {
+  function displayProducts(products: ProductType[]): void { //can return undefined, but -> :undefined -> has to return undefined
     const productNames = products.map((p) => {
       const name = p.name.toLowerCase();
       return name;
@@ -139,6 +145,7 @@ function runTheLearningSamples() {
     const msg = `Sample products include: ${productNames.join(', ')}`;
     console.log(`${prefix} return void`);
     console.log(msg);
+    return undefined;
   }
 
   displayProducts(sampleProducts);
@@ -189,9 +196,9 @@ function runTheLearningSamples() {
   }
 
   console.log(`${prefix} Default parameters`);
-  pineapple = createProductWithDefaults('pineapple', 'pine-apple.jpg');
-  mango = createProductWithDefaults('mango');
-  console.log(pineapple, mango);
+  pineapple = createProductWithDefaults('pineapple', 'pine-apple.jpg'); // TS2554: Expected 1-2 arguments, but got 3.
+  mango = createProductWithDefaults('mango');                             // ^ error shown when I add 3rd arg, but didn't show error while typing, 
+  console.log(pineapple, mango);                                            // like it would e.g. for undefined variable
 
   // *** updateOutput()
 
