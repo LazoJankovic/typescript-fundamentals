@@ -1,7 +1,7 @@
-import { getProducts, Product } from '../lib';
+import { getProducts, Product } from '../lib'; // -> export * from './products';
 
 export default async function updateOutput(id: string) {
-  const products = await getProducts();
+  const products = await getProducts(); //async function getProducts(): Promise<Product[]> {
   const output = document.querySelector(`#${id}`);
   const html = layoutProducts(products);
 
