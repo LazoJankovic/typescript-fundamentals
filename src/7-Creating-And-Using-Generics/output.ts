@@ -1,5 +1,5 @@
 import { productsURL, FoodProduct, customersURL } from '../lib';
-
+// gets products.json, ... , gets cutomers.json
 const prefix = '🐉 ';
 
 interface HasId {
@@ -22,7 +22,7 @@ class GenericModel<T extends HasId> {
 
 const foodModel = new GenericModel<FoodProduct>(productsURL);
 
-export default async function updateOutput(id: string = 'output') {
+export default async function updateOutput(id: string = 'output') {  
   // const products = await getProducts();
   // const products = await getList<FoodProduct>(productsURL);
   const products = await foodModel.getItems();
@@ -153,6 +153,18 @@ async function runTheLearningSamples() {
   console.log(`${prefix} Generic Interface`);
   console.table(foodModel.items);
 
+  class booleanTest implements Model<boolean> {
+    items: boolean[] | undefined;
+    
+    async getItems(): Promise<boolean[]> { //here we specified what should be returned
+      let response = await getList<boolean>('someURL');
+      return response;
+    };
+    getItemById(id: number) { return 5 > id}; // here we didn't, but we know from Model that it's boolean | undefined
+    
+  }
+
+
   // generic classes
 
   // see GenericModel<T>
@@ -185,3 +197,24 @@ async function runTheLearningSamples() {
   // const pearFood: FoodProduct = pear;
   const pearFood: Partial<FoodProduct> = pear;
 }
+
+function someWord<T>(ar1: T, ar2: boolean): T[] {
+ // let x = T.toString(); // 'T' only refers to a type, but is being used as a value here.
+  console.log('x is: ', x)
+  // return [1,3] //Type 'number' is not assignable to type 'T'.
+  // 'T' could be instantiated with an arbitrary type which could be unrelated to 'number'.
+  // if(ar1 && ar2) {return 5} //hmm so it MUST return array of T's in every case
+  //return [ar1, ar1 +2] // Operator '+' cannot be applied to types 'T' and 'number'
+  return [ar1, ar1];
+}
+
+// let bln = someWord<boolean>(5, 2) //Argument of type 'number' is not assignable to parameter of type 'boolean'
+//thught it might convert it... but that would defeat the purpose....
+
+let bln = someWord<boolean>(true, false)
+console.log('----', bln)
+
+let p: Object;
+p = 'a'
+//p = null
+//p = undefined

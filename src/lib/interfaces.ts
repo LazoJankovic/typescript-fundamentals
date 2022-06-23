@@ -4,7 +4,7 @@ export interface Product {
   icon: string;
   description?: string;
   validate(): boolean; //products.json don't have functions and it doesn't show errors 
-                      // probably because it wotrks because of the changes later in course 
+                      // probably it wotrks because of the changes later in course 
 }
 
 // Examples of using a type alias
